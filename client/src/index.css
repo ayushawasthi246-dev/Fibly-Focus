@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,100..900;1,100..900&family=Anton&family=Asap:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&family=Cabin:ital,wght@0,400..700;1,400..700&family=Cuprum:ital,wght@0,400..700;1,400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lexend:wght@100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Share+Tech&display=swap&family=Bungee&');
+@import "tailwindcss";
+
+@plugin "tailwind-scrollbar" {
+  nocompatible: true;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@theme {
+  --breakpoint-xxs: 25rem;
+  --breakpoint-xs: 28.4375rem;
+  --breakpoint-xsm: 34.375rem;
+  --breakpoint-xlg: 56.25rem;
+  --breakpoint-xxl: 73.125rem;
+  --font-Cuprum: "Cuprum", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-PT_Sans: "PT Sans", sans-serif;
+  --font-Bebas_Neue: "Bebas Neue", sans-serif;
+  --font-Josefin_Sans: "Josefin Sans", sans-serif;
+  --font-Exo_2: "Exo 2", sans-serif;
+  --font-Lexend: "Lexend", sans-serif;
+  --font-Alumni_Sans_SC: "Alumni Sans SC", sans-serif;
+  --font-Share_Tech: "Share Tech", sans-serif;
+  --font-Asap: "Asap", sans-serif;
+  --font-Anton: "Anton", sans-serif;
+  --font-Bungee: "Bungee", sans-serif;
+}
+
+@layer utilities {
+  @keyframes fadeToggle {
+
+    0%{
+      transform: translateY(0);
+    }
+
+    35% {
+      transform: translateY(-8px);
+    }
+
+    70% {
+      transform: translateY(0px);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .delay-200ms {
+    animation-delay: 0.2s;
+  }
+
+  .animate-fadeToggle {
+    animation: fadeToggle 1.2s ease-in-out infinite;
+  }
+
+  .animate-fadeToggle-300ms {
+    animation: fadeToggle 1.2s ease-in-out infinite;
+    animation-delay: 0.3s;
+  }
+
+  .animate-fadeToggle-500ms {
+    animation: fadeToggle 1.2s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.moving:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
