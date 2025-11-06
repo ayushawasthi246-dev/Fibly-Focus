@@ -35,7 +35,7 @@ export const SendOTP = async (user, purpose) => {
                     <table width="100%" cellpadding="0" cellspacing="0">
                     <tr>
                         <td align="center">
-                        <table width="400" cellpadding="0" cellspacing="0" style="background-color:#fff; padding:20px; border-radius:8px;">
+                        <table width="400" cellpadding="0" cellspacing="0" style="background-color:#fff; padding:20px;">
                             <tr>
                             <td align="center" style="font-size:24px; font-weight:bold; color:#333;">
                                 ${purpose == "verify" ? "Verify Your Account" : "Reset Your Password"}
@@ -90,7 +90,7 @@ export const WelcomeMail = async (user) => {
                     <title>Welcome Email</title>
                 </head>
                 <body style="margin: 0; padding: 0; background-color: #f3f3f3; font-family: Arial, sans-serif;">
-                    <div style="max-width: 600px; margin: 40px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                    <div style="max-width: 600px; margin: 40px auto; background-color: #ffffff; overflow: hidden;">
                     <div style="padding: 5px 30px; text-align: center;">
                         <h1 style="font-size: 30px; color: #111111; margin-bottom: 20px;">Welcome to FiblyFocus!</h1>
                         <p style="font-size: 16px; color: #333333; line-height: 1.6; margin-bottom: 20px;">
