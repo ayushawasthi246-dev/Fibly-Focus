@@ -15,7 +15,7 @@ export default function LandingPage() {
 
   const navigate = useNavigate()
 
-    const { BackendURL} = useContext(Appcontent)
+  const { BackendURL } = useContext(Appcontent)
 
   const words = ["Professionals", "Creators", "Students", "Teams", "Everyone"]
   const [index, setIndex] = useState(0);
@@ -74,14 +74,7 @@ export default function LandingPage() {
 
   const [isLG, setIsLG] = useState(window.innerWidth >= 1024);
   const [isSM, setIsSM] = useState(window.innerWidth >= 640);
-
-  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
-
-  useEffect(() => {
-    const updateScreenHeight = () => setScreenHeight(window.innerHeight);
-    window.addEventListener("resize", updateScreenHeight);
-    return () => window.removeEventListener("resize", updateScreenHeight);
-  }, []);
+  const [isHeightXL, setIsHeightXL] = useState(window.innerHeight > 1080);
 
   const scale = useTransform(scrollY, [0, 400], [1, 1.25]);
 
@@ -89,6 +82,7 @@ export default function LandingPage() {
     const handleResize = () => {
       setIsLG(window.innerWidth >= 1024)
       setIsSM(window.innerWidth >= 640)
+      setIsHeightXL(window.innerHeight > 1080)
     }
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -160,28 +154,30 @@ export default function LandingPage() {
   return (
     <>
       <Navbar />
-      <div ref={containerRef} className="relative w-screen grid grid-rows-[auto_auto] lg:grid-rows-[80vh_auto] ">
+      <div ref={containerRef} className="relative w-screen bg-[#080414] grid grid-rows-[auto_auto]">
 
         <motion.div
-          style={isLG ? {
+          style={!isHeightXL && isLG ? {
             x,
             y,
             translateX: "-50%",
             translateY: "-65%",
             scale
-          } : {}}
+          } : {
+            display: "none",
+          }}
           className="absolute hidden lg:inline z-10 pb-10"
         >
           <img
-            style={isLG ? { transform: `scaleX(${filp ? -1 : 1})` } : {}}
-            className="h-[600px] w-[600px] lg:h-[380px] object-contain pb-6 drop-shadow-[-5px_-5px_35px_rgba(0,0,0,1)]"
+            style={!isHeightXL && isLG ? { transform: `scaleX(${filp ? -1 : 1})` } : {}}
+            className="h-[380px] object-contain pb-6 drop-shadow-[-5px_-5px_35px_rgba(0,0,0,1)]"
             src={assets.mascot}
             alt="MASCOT"
           />
         </motion.div>
 
-        <div className=" w-full h-fit lg:h-full grid grid-cols-1 grid-rows-[auto_auto] lg:grid-cols-2 lg:grid-rows-1 gap-15 lg:gap-0 py-5 lg:py-0 bg-[#080414]">
-          <div className="flex flex-col gap-10 pl-5 pr-5 lg:pl-15 lg:pr-10 h-fit lg:h-full items-center justify-center lg:items-start shrink-1">
+        <div className="w-full min-h-full xxl:min-h-[650px] 2xl:min-h-[700px] grid grid-cols-1 grid-rows-[auto_auto] lg:grid-cols-2 lg:grid-rows-1 gap-15 lg:gap-0 py-5 lg:py-0 bg-[#080414]">
+          <div className="flex flex-col gap-10 pl-10 pr-10 lg:pl-15 lg:pr-10 h-fit lg:h-full items-center justify-center lg:items-start shrink-1">
 
             <p className="text-6xl xs:text-6xl xsm:text-7xl sm:text-8xl xxl:text-9xl  font-Bebas_Neue text-center xsm:text-start text-white ">Find Your <br className="hidden xl:inline" />Flow</p>
 
@@ -199,7 +195,7 @@ export default function LandingPage() {
             <div ref={box1Ref} className="relative self-center px-8 py-5 lg:pr-10 lg:py-15 xl:px-15 xl:py-10 grid grid-cols-2 w-[450px] h-[350px] xs:h-[380px] sm:w-[650px] sm:h-[600px]" >
 
               <img
-                className="absolute z-10 p-13 xs:p-16 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden object-contain drop-shadow-[-5px_-5px_35px_rgba(0,0,0,1)]"
+                className={`absolute z-10 p-13 xs:p-16 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${isHeightXL && isLG ? "" : "lg:hidden"} object-contain drop-shadow-[-5px_-5px_35px_rgba(0,0,0,1)]`}
                 src={assets.mascot}
                 alt="MASCOT"
               />
@@ -213,15 +209,21 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className=" flex justify-center lg:grid grid-cols-2 bg-[#080414] relative pb-12 lg:py-20">
+        <div className={`flex justify-baseline items-center lg:grid grid-cols-2 bg-[#080414] relative mb-12 ${isHeightXL ? "py-0" :" lg:py-20"}`}>
 
-          <div ref={box2Ref} ></div>
+          <div ref={box2Ref} className=" flex justify-center items-center">
+            <img
+              className={`h-[400px] xl:h-[450px] ${isHeightXL && isLG ? "block" : "hidden"} pb-5 [transform:rotateY(180deg)] object-contain drop-shadow-[-5px_-5px_35px_rgba(0,0,0,1)]`}
+              src={assets.mascot}
+              alt="MASCOT"
+            />
+          </div>
           <motion.div
             {...motionProps}
             viewport={{ amount: 0.1 }}
             transition={{ duration: 0.45 }}
 
-            className="my-10 mx-12 sm:my-14 sm:mx-20 lg:mx-0 lg:pr-20 flex flex-col gap-5 items-center lg:items-start flex-wrap" >
+            className="my-10 sm:my-14 mx-12 sm:mx-20 lg:mx-0 lg:pr-20 flex flex-col gap-5 items-center lg:items-start flex-wrap" >
 
             <div className="text-center lg:text-start" >
               <snap className="text-white font-Bebas_Neue text-xl xs:text-2xl sm:text-5xl xl:text-6xl mr-2 xsm:mr-4">Meet</snap>
@@ -242,10 +244,6 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </div>
-
-
-
-
 
       <div className="bg-[#080414]  w-full items-center pb-20">
 
@@ -486,7 +484,7 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-2 w-fit md:w-full gap-13 md:gap-6 ">
           <div className="flex flex-col gap-4 items-center md:items-start">
             <p>
-              <span className="text-2xl xs:text-3xl xsm:text-5xl xl:text-7xl font-bold text-[#FAD156] font-roboto">Fibly</span>
+              <span className="text-2xl xs:text-3xl xsm:text-5xl xl:text-7xl font-bold text-[#f7c739] font-roboto">Fibly</span>
               <span className="text-2xl xs:text-3xl xsm:text-5xl xl:text-7xl font-bold text-white">Focus</span>
             </p>
             <p className="text-sm xs:text-base xsm:text-xl xl:text-2xl text-white ">Make every minute count, with Fibly</p>

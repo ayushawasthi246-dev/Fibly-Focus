@@ -6,17 +6,19 @@ import axios from "axios"
 import { toast } from "react-toastify"
 
 export default function Navbar() {
-    
-    const { isloggedin, userdata , BackendURL ,setisloggedin ,setuserdata } = useContext(Appcontent)
-    
+
+    const { BackendURL, setisloggedin, setuserdata } = useContext(Appcontent)
+
     const { scrollY } = useScroll()
     const [scrollingstarted, setscrollingstarted] = useState(false)
     const [menu, setmenu] = useState(false)
-    
-    const logout = async ()=>{
+
+    const navigate = useNavigate()
+
+    const logout = async () => {
 
         try {
-            const {data} = await axios.post(BackendURL + '/auth/logout' ,{} , {
+            const { data } = await axios.post(BackendURL + '/auth/logout', {}, {
                 withCredentials: true,
             })
             data.success && setisloggedin(false)
@@ -28,8 +30,6 @@ export default function Navbar() {
         }
 
     }
-
-    const navigate = useNavigate()
 
     useEffect(() => {
         const remove = scrollY.onChange((Y) => {
@@ -44,7 +44,7 @@ export default function Navbar() {
 
     return (
         <div className={`sticky top-0 w-screen z-20 bg-[#080414] border-white/50 ${scrollingstarted ? "border-b-1" : ""} `}>
-            <div className="py-3 sm:py-8 px-8 xl:px-15 flex justify-between items-center top-0 text-2xl sm:text-3xl xl:text-4xl font-bold font-roboto">
+            <div className="py-3 sm:py-7 px-8 xl:px-15 flex justify-between items-center top-0 text-2xl sm:text-3xl xl:text-4xl font-bold font-roboto">
                 <div >
                     <span className="text-[#FAD156]">Fibly</span>
                     <span className="text-white">Focus</span>
@@ -63,22 +63,13 @@ export default function Navbar() {
                         <span className="bg-amber-300 h-0.5 w-full transition-all duration-400 -translate-x-[200%] group-hover:translate-x-0"></span>
                     </a>
                 </nav>
-                {isloggedin ?
-                    <div className="hidden lg:flex gap-5 xl:gap-7">
+                <div className="hidden lg:flex gap-5 xl:gap-7">
 
-                        <button onClick={logout} className="relative bg-[#080414] text-white/80 text-sm xl:text-base font-bold h-12 w-27 xl:w-32 rounded-3xl cursor-pointer m-[2px] transition-all duration-200 border-[2px] hover:border-[3px] hover:text-lg hover:text-white active:scale-95">LOG OUT </button>
+                    <button onClick={() => { navigate('/login') }} className="relative bg-[#080414] text-white/80 text-sm xl:text-base font-bold h-12 w-27 xl:w-32 rounded-3xl cursor-pointer m-[2px] transition-all duration-200 border-[2px] hover:border-[3px] hover:text-lg hover:text-white active:scale-95">LOG IN</button>
 
-                        <button className="relative bg-[#080414] text-white text-sm xl:text-base font-bold h-12 w-12 rounded-3xl m-[2px] transition-all duration-200 border-[2px] uppercase">{userdata ? userdata.Username[0] : "N"}</button>
-                    </div>
-                    : 
-                    <div className="hidden lg:flex gap-5 xl:gap-7">
+                    <button onClick={() => { navigate('/singup') }} className="relative bg-[#080414] text-white/80 text-sm xl:text-base font-bold h-12 w-27 xl:w-32 rounded-3xl cursor-pointer m-[2px] transition-all duration-200 border-[2px] hover:border-[3px] hover:text-lg hover:text-white active:scale-95">SING UP</button>
 
-                        <button onClick={() => { navigate('/login') }} className="relative bg-[#080414] text-white/80 text-sm xl:text-base font-bold h-12 w-27 xl:w-32 rounded-3xl cursor-pointer m-[2px] transition-all duration-200 border-[2px] hover:border-[3px] hover:text-lg hover:text-white active:scale-95">LOG IN</button>
-
-                        <button onClick={() => { navigate('/singup') }} className="relative bg-[#080414] text-white/80 text-sm xl:text-base font-bold h-12 w-27 xl:w-32 rounded-3xl cursor-pointer m-[2px] transition-all duration-200 border-[2px] hover:border-[3px] hover:text-lg hover:text-white active:scale-95">SING UP</button>
-
-                    </div>
-                }
+                </div>
                 <motion.button
                     onTap={() => { setmenu(!menu) }}
                     whileHover={{ backgroundColor: "#ffffff2e" }}

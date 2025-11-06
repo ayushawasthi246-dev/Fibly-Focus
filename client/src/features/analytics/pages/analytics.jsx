@@ -120,7 +120,7 @@ const analytics = () => {
   const totalFocusModeTime = Object.values(focusData?.focusByCategory || {})?.reduce((acc, val) => acc + val, 0)
 
   return (
-    <div className="flex flex-col gap-5 py-1.5 h-full">
+    <div className="flex flex-1 relative overflow-x-hidden flex-col gap-5 py-1.5 lg:py-1 h-full w-full">
 
       <div className="flex justify-between pl-12 xsm:pl-15 md:pl-0">
         <p className="text-white text-sm xxs:text-lg xsm:text-2xl font-Lexend font-bold  xxs:-translate-y-1 lg:-translate-y-0">Analytics</p>
@@ -205,7 +205,7 @@ const analytics = () => {
 
       </div>
 
-      <div className=" flex flex-col lg:flex-row min-h-[1300px] xsm:min-h-[1100px] lg:min-h-[520px] flex-1 pb-5 gap-5 w-full">
+      <div className=" flex flex-col lg:flex-row min-h-[1300px] xsm:min-h-[1100px] lg:min-h-[500px] flex-1 pb-3 lg:pb-0 gap-5 w-full">
 
         <div className="lg:w-7/12 h-7/12 xss:h-3/5 xsm:h-full flex flex-col gap-5">
 

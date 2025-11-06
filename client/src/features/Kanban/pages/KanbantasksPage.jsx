@@ -191,7 +191,7 @@ function TaskKanban() {
   }, [notification, authChecked, isLogged]);
 
   return (
-    <>
+    <div className="flex-1 flex relative overflow-x-hidden">
       <div className="min-h-[620px] h-full w-full flex flex-col gap-3">
         <div className={`h-36 w-72 xxs:w-80 fixed z-50 bottom-2 right-2 flex gap-2 justify-end pt-5 pr-6 group transition-all ease-out duration-200 ${notification.show ? "" : "translate-x-96"}`}>
           <IoCloseSharp
@@ -212,7 +212,7 @@ function TaskKanban() {
           <span className='text-xs xxs:text-sm sm:text-lg font-semibold font-Exo_2'>Back to Project list</span>
         </div>
 
-        <div className="flex-1 mb-3 p-5 rounded-xl flex flex-col gap-4 xxs:gap-6 w-full bg-[#1E2132] overflow-hidden relative">
+        <div className="flex-1 mb-3 lg:mb-0 p-5 rounded-xl flex flex-col gap-4 xxs:gap-6 w-full bg-[#1E2132] overflow-hidden relative">
           {/* add task */}
           <div className={`h-full w-full absolute transition-all duration-200 z-10 top-0 left-0 bg-white/13 flex justify-center items-center  ${card ? "block" : "hidden"} overflow-auto`}>
 
@@ -380,7 +380,7 @@ function TaskKanban() {
 
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

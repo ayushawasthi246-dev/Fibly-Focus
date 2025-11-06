@@ -11,7 +11,7 @@ const slides = [
 
 const Slider = ({initialSlide}) => {
   return (
-    <div className="h-full flex justify-center items-center px-2 ">
+    <div className="h-full flex justify-center items-center px-2 mb-2">
       <Carousel initialCurr={initialSlide} >
         {slides.map((s , i) => (
           <img className={`object-contain drop-shadow-[0_0px_15px_rgba(0,0,0,0.5)] ${i==1||i==3 ? "p-10" : ""} ${i==0||i==2 ? "p-4" : ""}`} key={i} src={s} alt="nothing" />

@@ -146,7 +146,7 @@ const dashboard = () => {
     const [selecteddate, setselecteddate] = useState(formatDateKey(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
 
     return (
-        <div className="flex-1 flex relative bg-[#080414] overflow-x-hidden">
+        <div className="flex-1 flex relative overflow-x-hidden">
 
             <div className="min-h-[950px] xsm:min-h-[1050px] xlg:min-h-[700px] max-h-[900px] w-full mt-3 flex flex-col gap-3 ">
 

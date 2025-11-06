@@ -1,5 +1,5 @@
 import LandingPage from './pages/LandingPage.jsx'
-import {Routes, Route } from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 import Layout from './layout/layout.jsx'
 
 import Login from './auth/pages/Login.jsx'

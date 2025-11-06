@@ -84,7 +84,7 @@ const Singup = () => {
 
   return (
     <>
-      <div className="grid lg:grid-cols-[44%_48%] xl:grid-cols-[45%_45%] max-w-screen h-screen p-15 bg-[#080414] text-white gap-20 xl:gap-30 relative ">
+      <div className="grid justify-center items-center lg:grid-cols-[44%_48%] xl:grid-cols-[45%_45%] max-w-screen min-h-screen p-15 bg-[#080414] text-white gap-20 xl:gap-30 relative ">
 
         <form onSubmit={handleSubmit(onSubmit, onerror)} className="flex flex-col items-center ">
 
@@ -168,7 +168,7 @@ const Singup = () => {
           </div>
         </form>
 
-        <div className="bg-white p-5 rounded-3xl hidden lg:block">
+        <div className="bg-white p-5 rounded-3xl hidden lg:block max-h-[950px] max-w-[900px]">
           <Slider initialSlide={2} />
         </div>
 

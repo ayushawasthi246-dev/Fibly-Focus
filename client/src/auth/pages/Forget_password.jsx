@@ -210,7 +210,7 @@ const Singup = () => {
 
   return (
     <>
-      <div className="grid lg:grid-cols-[44%_48%] xl:grid-cols-[45%_45%] max-w-screen h-screen p-15 bg-[#080414] text-white gap-20 xl:gap-30 relative  ">
+      <div className="grid justify-center items-center lg:grid-cols-[44%_48%] xl:grid-cols-[45%_45%] max-w-screen min-h-screen p-15 bg-[#080414] text-white gap-20 xl:gap-30 relative ">
 
         <div className="flex flex-col items-center">
 
@@ -247,10 +247,6 @@ const Singup = () => {
 
           }
 
-
-
-
-
           {isEmailSent && !isotpSent &&
 
             <div className="flex flex-col justify-center h-full gap-5 xsm:w-sm sm:w-md lg:w-full xl:pl-20 pt-10 xxs:pt-0">
@@ -281,9 +277,6 @@ const Singup = () => {
             </div>
 
           }
-
-
-
 
           {isEmailSent && isotpSent &&
 
@@ -352,12 +345,10 @@ const Singup = () => {
               <button type="submit" disabled={isSubmitting} className='bg-blue-500 text-lg font-Exo_2 py-1.5 xxs:py-2.5 rounded-xl font-bold cursor-pointer active:scale-95'>Submit</button>
 
             </form>
-
           }
 
         </div>
-
-        <div className="bg-white p-5 rounded-3xl hidden lg:block">
+        <div className="bg-white p-5 rounded-3xl hidden lg:block max-h-[950px] max-w-[900px]">
           <Slider initialSlide={3} />
         </div>
 

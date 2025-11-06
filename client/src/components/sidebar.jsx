@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import assets from '../assets/assets'
 import { Appcontent } from '../context/Appcontext'
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { motion } from 'motion/react'
 import Tooltip from './tooltip'
 
@@ -13,8 +13,13 @@ import { PiKanbanFill } from "react-icons/pi";
 import { RxLapTimer } from "react-icons/rx";
 import { GoGoal } from "react-icons/go";
 
+import { TbLogout } from "react-icons/tb";
+import axios from 'axios'
+import { toast } from 'react-toastify'
+
 const sidebar = ({ fit, setfit }) => {
-    const { userdata } = useContext(Appcontent)
+
+    const { userdata , BackendURL ,setisloggedin ,setuserdata  } = useContext(Appcontent)
 
     const [expand, setexpand] = useState(window.innerWidth >= 1170);
 
@@ -25,7 +30,7 @@ const sidebar = ({ fit, setfit }) => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    
+
     const [show, setshow] = useState(false)
     const sidebarRef = useRef(null)
     const toggleRef = useRef(null)
@@ -44,6 +49,25 @@ const sidebar = ({ fit, setfit }) => {
         setshow(!show)
         setfit(!fit)
     }
+
+    const navigate = useNavigate()
+    
+    const logout = async ()=>{
+
+        try {
+            const {data} = await axios.post(BackendURL + '/auth/logout' ,{} , {
+                withCredentials: true,
+            })
+            data.success && setisloggedin(false)
+            data.success && setuserdata(false)
+            navigate('/')
+            toast.success(data.message)
+        } catch (error) {
+            toast.error(error.message)
+        }
+
+    }
+
 
     useEffect(() => {
 
@@ -111,7 +135,7 @@ const sidebar = ({ fit, setfit }) => {
                 ref={sidebarRef}
                 className={`h-full ${expand ? "w-40 xs:w-50 sm:w-60" : "w-20"} border-r-2 border-white/20 transition-all duration-200 ${show ? "-translate-x-0" : "-translate-x-96"} md:-translate-x-0 bg-[#080414] overflow-x-hidden`}>
 
-                <div className={`pr-5 flex flex-col ${expand ? "gap-10 sm:gap-16" : "gap-10"}  bg-[#080414]`}>
+                <div className="pr-5 flex min-h-full flex-col gap-10 bg-[#080414]">
 
                     <div className={`flex ${expand ? "justify-end md:justify-between items-baseline" : "justify-center mt-2"} relative group `}>
                         <div className={`text-lg xs:text-xl sm:text-[26px] md:text-3xl xs:mr-4 mt-1 font-semibold ${!expand && "hidden"}`}>
@@ -156,6 +180,13 @@ const sidebar = ({ fit, setfit }) => {
                                 </NavLink>
                             )
                         })}
+                    </div>
+
+                    <div onClick={logout} className={`flex mt-auto items-center ${expand ? "justify-start" : "justify-center"} gap-5 py-2 px-2 hover:bg-[#262c46] cursor-pointer`}>
+                        <Tooltip text={"Log out"}>
+                            <TbLogout className={`text-white ${!expand ? "text-2xl" : "text-sm xs:text-base sm:text-xl"}`} />
+                        </Tooltip>
+                        <p className={`text-white text-xs xs:text-sm sm:text-lg font-semibold font-Asap ${!expand && "hidden"}`}>Log out</p>
                     </div>
                 </div>
             </div>

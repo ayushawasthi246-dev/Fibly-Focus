@@ -120,7 +120,7 @@ const KanbanPage = () => {
 
 
     return (
-        <>
+        <div className='flex-1 flex relative overflow-x-hidden'>
             <div className="min-h-[620px] h-full w-full flex flex-col gap-5">
                 <div className="flex items-center justify-between">
                     <span className="text-sm xxs:text-lg sm:text-2xl ml-14 sm:ml-20 md:ml-0 font-semibold text-white font-Lexend">All Projects</span>
@@ -132,7 +132,7 @@ const KanbanPage = () => {
                         className="bg-white px-2.5 xxs:px-4 sm:px-5 py-1.5 xxs:py-2.5 rounded-lg font-bold text-[10px] xxs:text-xs sm:text-sm cursor-pointer transition-all duration-250 hover:bg-gray-100 hover:scale-110">Create Project</button>
                 </div>
 
-                <div className={`flex-1 mb-3 p-5 rounded-xl flex flex-col gap-6 w-full bg-[#1E2132] ${projectlist.length === 0 ? "justify-center items-center" : ""} overflow-auto relative`}>
+                <div className={`flex-1 mb-3 lg:mb-0 p-5 rounded-xl flex flex-col gap-6 w-full bg-[#1E2132] ${projectlist.length === 0 ? "justify-center items-center" : ""} overflow-auto relative`}>
                     <div className={`h-full w-full absolute transition-all duration-200 z-10 top-0 left-0 bg-white/13 flex justify-center items-center  ${card ? "block" : "hidden"} overflow-auto`}>
                         {/* add project */}
                         <div
@@ -272,12 +272,11 @@ const KanbanPage = () => {
                                         </div>
                                     </div>
                                 )))}
-
                     </div>
                 </div>
 
             </div>
-        </>
+        </div>
     )
 }
 
