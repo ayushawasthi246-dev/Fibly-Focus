@@ -11,13 +11,10 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Appcontent } from "../../../context/Appcontext.jsx";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const analytics = () => {
 
-  const { BackendURL, statuscheck, Streak } = useContext(Appcontent)
-
-  const navigate = useNavigate()
+  const { BackendURL, Streak } = useContext(Appcontent)
 
   const [focusData, setFocusData] = useState([])
   const [taskData, setTaskData] = useState([])
@@ -46,7 +43,7 @@ const analytics = () => {
       if (res.data?.success) {
         setFocusData(res.data.data)
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
@@ -60,7 +57,7 @@ const analytics = () => {
         setCurrentStreak(res.data.UserData.CurrentStreak)
         setLongestStreak(res.data.UserData.LongestStreak)
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
@@ -74,48 +71,19 @@ const analytics = () => {
       if (res.data?.success) {
         setTaskData(res.data.data)
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
     }
   }
 
-  const [isLogged, setIsLogged] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-
   useEffect(() => {
-    const checkStatus = async () => {
-      try {
-        const check = await statuscheck();
-
-        if (!check) {
-          toast.error("Not authorized. Please log in again");
-          setIsLogged(false);
-          navigate("/");
-          return;
-        }
-
-        setIsLogged(true);
-      } catch (error) {
-        toast.error(error.message);
-        setIsLogged(false);
-        navigate("/");
-      } finally {
-        setAuthChecked(true)
-      }
-    };
-
-    checkStatus();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (!authChecked || !isLogged) return
     timespend()
     taskdata()
     userdata()
     Streak()
-  }, [authChecked, isLogged, timeline])
+  }, [timeline])
 
   const totalFocusModeTime = Object.values(focusData?.focusByCategory || {})?.reduce((acc, val) => acc + val, 0)
 

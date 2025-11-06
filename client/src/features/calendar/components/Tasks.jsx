@@ -19,7 +19,7 @@ export default function Tasks({ task, index, fetchtasks }) {
                 await fetchtasks()
                 toast.success(res.data.message)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (err) {
             toast.error(err.response?.data?.message || "Something went wrong")

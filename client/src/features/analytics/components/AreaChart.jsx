@@ -18,6 +18,33 @@ const data = [
   { name: 'Sat', Pomodoro: 0, FocusMode: 0, TotalFocusTime: 0 },
 ];
 
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div
+        style={{
+          backgroundColor: '#1f1f1f',
+          border: '1px solid #5f46e5',
+          borderRadius: '8px',
+          color: '#fff',
+          padding: '8px 12px',
+          boxShadow: '0px 4px 8px rgba(0,0,0,0.2)',
+        }}
+      >
+        <p style={{ color: '#a78bfa', fontWeight: 'bold', marginBottom: '6px' }}>
+          {label}
+        </p>
+        {payload.map((entry, index) => (
+          <p key={`item-${index}`} style={{ margin: 0, color: entry.color }}>
+            {entry.name} : {entry.value} min
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
 const StackedAreaChart = ({ FocusData }) => {
 
   const updatedData = data.map((day, index) => ({
@@ -48,20 +75,7 @@ const StackedAreaChart = ({ FocusData }) => {
       >
         <XAxis dataKey="name" tickFormatter={isXXS ? () => '' : undefined} />
         <YAxis />
-        <Tooltip
-          cursor={{ fill: "#ffffff", fillOpacity: 0.2 }}
-          contentStyle={{
-            backgroundColor: "#1f1f1f",
-            border: "1px solid #5f46e5",
-            borderRadius: "8px",
-            color: "#fff",
-            boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
-          }}
-          labelStyle={{
-            color: "#a78bfa",
-            fontWeight: "bold",
-          }}
-        />
+        <Tooltip content={<CustomTooltip />} />
         <Area type="monotone" dataKey="TotalFocusTime" stackId="1" stroke="#ffc658" fill="#ffc658" />
         <Area type="monotone" dataKey="Pomodoro" stroke="#8884d8" fill="#8884d8" />
         <Area type="monotone" dataKey="FocusMode" stroke="#82ca9d" fill="#82ca9d" />

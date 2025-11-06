@@ -133,8 +133,10 @@ export default function Kabanboard({ columns, setColumns }) {
             const res = await axios.post(BackendURL + "/kanban/updateposition", { Taskid, newcol, newidx, oldcol }, { withCredentials: true })
             if (res.data?.success) {
                 if (newcol === "completed") {
-                    setnotification({idx:newidx , show:true})
+                    setnotification({ idx: newidx, show: true })
                 }
+            } else {
+                toast.error(res.data?.message)
             }
         } catch (err) {
             toast.error(err.res?.data?.message || "Something went wrong")

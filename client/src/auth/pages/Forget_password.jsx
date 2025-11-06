@@ -22,10 +22,10 @@ const Singup = () => {
       })
       if (data.success) {
         navigate('/Dashboard')
-        toast.success(data.message)
+        toast.success(data?.message)
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error?.message)
     }
   }
 
@@ -74,9 +74,9 @@ const Singup = () => {
 
       if (response.data.success) {
         setisEmailSent(true)
-        toast.success(response.data.message)
+        toast.success(response.data?.message)
       } else {
-        toast.error(response.data.message)
+        toast.error(response.data?.message)
       }
 
     } catch (error) {
@@ -107,9 +107,9 @@ const Singup = () => {
         setisloggedin(true)
         getuserdata()
         navigate('/')
-        toast.success(response.data.message)
+        toast.success(response.data?.message)
       } else {
-        toast.error(response.data.message)
+        toast.error(response.data?.message)
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong");
@@ -161,9 +161,9 @@ const Singup = () => {
 
       if (response.data.success) {
         setisotpSent(true)
-        toast.success(response.data.message)
+        toast.success(response.data?.message)
       } else {
-        toast.error(response.data.message)
+        toast.error(response.data?.message)
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong");

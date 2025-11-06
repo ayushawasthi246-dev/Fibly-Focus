@@ -11,7 +11,7 @@ const timer = () => {
 
   const isBelowMd = useMediaQuery("(max-width: 768px)")
   const { id } = useParams()
-  const { BackendURL , statuscheck} = useContext(Appcontent)
+  const { BackendURL} = useContext(Appcontent)
 
   const [SessionDuration, setSessionDuration] = useState(0)
   const [BreakDuration, setBreakDuration] = useState(0)
@@ -38,7 +38,7 @@ const timer = () => {
         setBreakDuration(res.data.UserData.BreakDuration)
         setNumOfCycles(res.data.UserData.Cycles)
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
@@ -51,46 +51,16 @@ const timer = () => {
       if (res.data?.success) {
         handlesessiondone()
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
     }
   }
 
-const [isLogged, setIsLogged] = useState(false);
-const [authChecked, setAuthChecked] = useState(false);
-
-
-useEffect(() => {
-  const checkStatus = async () => {
-    try {
-      const check = await statuscheck();
-
-      if (!check) {
-        toast.error("Not authorized. Please log in again");
-        setIsLogged(false);
-        navigate("/");
-        return;
-      }
-
-      setIsLogged(true);
-    } catch (error) {
-      toast.error(error.message);
-      setIsLogged(false);
-      navigate("/");
-    } finally {
-      setAuthChecked(true)
-    }
-  };
-
-  checkStatus();
-}, [navigate]);
-
   useEffect(() => {
-    if(!authChecked || !isLogged) return
     fetchSessionData()
-  }, [authChecked,isLogged])
+  }, [])
 
   const radius = isBelowMd ? 130 : 170
   const strokewidth = 10
@@ -102,7 +72,6 @@ useEffect(() => {
 
 
   useEffect(() => {
-    if (!authChecked || !isLogged) return
     if (runing) {
       const interval = setInterval(() => {
         settimeleft((prev) => {
@@ -137,7 +106,7 @@ useEffect(() => {
       }, 1000);
       return () => clearInterval(interval)
     }
-  }, [timeleft, runing ,authChecked,isLogged])
+  }, [timeleft, runing ])
 
   const progress = ((totaltime - timeleft) / totaltime) * circumference
 

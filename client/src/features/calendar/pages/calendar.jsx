@@ -7,14 +7,11 @@ import { Appcontent } from '../../../context/Appcontext'
 import { toast } from 'react-toastify'
 import AddTask from '../components/addTask.jsx';
 import assets from '../../../assets/assets.jsx';
-import { useNavigate } from 'react-router-dom';
 
 const calendar = () => {
 
-  const { BackendURL, model, closemodel, statuscheck ,Streak } = useContext(Appcontent)
+  const { BackendURL, model, closemodel, Streak } = useContext(Appcontent)
   const [currentdate, setcurrentdate] = useState(new Date())
-
-  const navigate = useNavigate()
 
   const genrateMonthGrid = (year, month) => {
     const startDate = new Date(year, month, 1);
@@ -80,7 +77,7 @@ const calendar = () => {
         }
 
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
@@ -94,49 +91,18 @@ const calendar = () => {
     setmonthtasks(tasks)
   }
 
-  const [isLogged, setIsLogged] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-
-
   useEffect(() => {
-    const checkStatus = async () => {
-      try {
-        const check = await statuscheck();
-
-        if (!check) {
-          toast.error("Not authorized. Please log in again");
-          setIsLogged(false);
-          navigate("/");
-          return;
-        }
-
-        setIsLogged(true);
-      } catch (error) {
-        toast.error(error.message);
-        setIsLogged(false);
-        navigate("/");
-      } finally {
-        setAuthChecked(true)
-      }
-    };
-
-    checkStatus();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (!authChecked || !isLogged) return
     Streak()
     fetchtasks()
-  }, [year, month, authChecked, isLogged])
+  }, [year, month])
 
   useEffect(() => {
-    if (!authChecked || !isLogged) return
     if (taskslist[selecteddate]) {
       settasksondate(taskslist[selecteddate])
     } else {
       settasksondate([])
     }
-  }, [taskslist, selecteddate, authChecked, isLogged])
+  }, [taskslist, selecteddate])
 
   const days = genrateMonthGrid(year, month)
 

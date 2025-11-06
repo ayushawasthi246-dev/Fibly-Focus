@@ -343,7 +343,7 @@ export const Taskslist = async (req, res) => {
         const existingProject = await ProjectModel.findById(id)
 
         if (!existingProject) {
-            return res.json({ success: false, message: "Can't find your project" })
+            return res.json({ success: false, message: "Project not exists" })
         }
 
         const Tasklist = await TaskModel.find({ Projectid: id }).sort({ index: 1 })

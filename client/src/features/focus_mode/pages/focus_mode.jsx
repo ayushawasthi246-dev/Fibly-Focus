@@ -12,7 +12,7 @@ const Focus_mode = () => {
     const [showtasks, setshowtasks] = useState(false)
     const [period, setperiod] = useState("week")
     const [history, sethistory] = useState([])
-    const { BackendURL, statuscheck, Streak } = useContext(Appcontent)
+    const { BackendURL, Streak } = useContext(Appcontent)
 
     const navigate = useNavigate()
 
@@ -22,47 +22,17 @@ const Focus_mode = () => {
             if (res.data?.success) {
                 sethistory(res.data.History)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong")
         }
     }
 
-    const [isLogged, setIsLogged] = useState(false);
-    const [authChecked, setAuthChecked] = useState(false);
-
     useEffect(() => {
-        const checkStatus = async () => {
-            try {
-                const check = await statuscheck();
-
-                if (!check) {
-                    toast.error("Not authorized. Please log in again");
-                    setIsLogged(false);
-                    navigate("/");
-                    return;
-                }
-
-                setIsLogged(true);
-            } catch (error) {
-                toast.error(error.message);
-                setIsLogged(false);
-                navigate("/");
-            } finally {
-                setAuthChecked(true)
-            }
-        };
-
-        checkStatus();
-    }, [navigate]);
-
-
-    useEffect(() => {
-        if (!authChecked || !isLogged) return
         fetchsessions()
         Streak()
-    }, [period, authChecked, isLogged])
+    }, [period])
 
     const [Title, seTtitle] = useState("");
     const [Category, setCategory] = useState("study");
@@ -77,7 +47,7 @@ const Focus_mode = () => {
                 const sessionID = res.data.ID
                 navigate(`/Focus-mode/${sessionID}`)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong")

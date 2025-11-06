@@ -9,7 +9,7 @@ import assets from '../../../assets/assets.jsx';
 
 const KanbanPage = () => {
 
-    const { BackendURL, statuscheck, Streak } = useContext(Appcontent)
+    const { BackendURL, Streak } = useContext(Appcontent)
 
     const presetColors = ["#3B82F6  ", "#06B6D4", "#0eb44d", "#9333EA", "#EC4899"]
     const [customcolor, setcustomcolor] = useState("#ffffff")
@@ -50,7 +50,7 @@ const KanbanPage = () => {
             if (res.data?.success) {
                 setprojectlist(res.data.ProjectData)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (err) {
             toast.error(err.response?.data?.message || "Something went wrong")
@@ -75,48 +75,19 @@ const KanbanPage = () => {
             if (res.data?.success) {
                 handleclose()
                 await fetchProjects()
-                toast.success(res.data.message)
+                toast.success(res.data?.message)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (err) {
             toast.error(err.response?.data?.message || "Something went wrong")
         }
     }
-    const [isLogged, setIsLogged] = useState(false);
-    const [authChecked, setAuthChecked] = useState(false);
-
 
     useEffect(() => {
-        const checkStatus = async () => {
-            try {
-                const check = await statuscheck();
-
-                if (!check) {
-                    toast.error("Not authorized. Please log in again");
-                    setIsLogged(false);
-                    navigate("/");
-                    return;
-                }
-
-                setIsLogged(true);
-            } catch (error) {
-                toast.error(error.message);
-                setIsLogged(false);
-                navigate("/");
-            } finally {
-                setAuthChecked(true)
-            }
-        };
-
-        checkStatus();
-    }, [navigate]);
-
-    useEffect(() => {
-        if (!authChecked || !isLogged) return;
         fetchProjects()
         Streak()
-    }, [authChecked, isLogged, authChecked, isLogged]);
+    }, []);
 
 
     return (

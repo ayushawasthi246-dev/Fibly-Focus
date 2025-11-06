@@ -4,11 +4,10 @@ import { Appcontent } from '../../../context/Appcontext'
 import { FaCaretDown } from "react-icons/fa";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
 const addTask = ({ settaskcard, isodateformate, fetchtasks }) => {
 
-    const { BackendURL, model, closemodel, statuscheck } = useContext(Appcontent)
+    const { BackendURL, model, closemodel} = useContext(Appcontent)
     const {
         register,
         handleSubmit,
@@ -24,8 +23,6 @@ const addTask = ({ settaskcard, isodateformate, fetchtasks }) => {
     const description = watch("TaskDescription") || ""
     const maxLength = 150
 
-    const navigate = useNavigate()
-
     const fectchprojects = async () => {
         try {
             const res = await axios.get(BackendURL + `/calendar/projects`, { withCredentials: true })
@@ -33,51 +30,22 @@ const addTask = ({ settaskcard, isodateformate, fetchtasks }) => {
             if (res.data?.success) {
                 setprojects(res.data.ProjectData)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong")
         }
     }
 
-    const [isLogged, setIsLogged] = useState(false);
-    const [authChecked, setAuthChecked] = useState(false);
-
     useEffect(() => {
-        const checkStatus = async () => {
-            try {
-                const check = await statuscheck();
-
-                if (!check) {
-                    setIsLogged(false);
-                    navigate("/");
-                    return;
-                }
-
-                setIsLogged(true);
-            } catch (error) {
-                toast.error(error.message);
-                setIsLogged(false);
-                navigate("/");
-            } finally {
-                setAuthChecked(true)
-            }
-        };
-
-        checkStatus();
-    }, [navigate]);
-
-    useEffect(() => {
-        if (!authChecked || !isLogged) return
         fectchprojects()
-    }, [authChecked, isLogged])
+    }, [])
 
     const filterprojects = projects.filter((p) =>
         (p.Heading || "").toLowerCase().includes(query.toLowerCase())
     )
 
     useEffect(() => {
-        if (!authChecked || !isLogged) return
         if (model.type === "edit") {
             settaskcard(true)
 
@@ -101,7 +69,7 @@ const addTask = ({ settaskcard, isodateformate, fetchtasks }) => {
         if (model.type === "delete") {
             settaskcard(true)
         }
-    }, [model, authChecked, isLogged])
+    }, [model])
 
     const deleteTask = async () => {
         try {
@@ -113,9 +81,9 @@ const addTask = ({ settaskcard, isodateformate, fetchtasks }) => {
                 await fetchtasks()
                 settaskcard(false)
                 closemodel()
-                toast.success(res.data.message)
+                toast.success(res.data?.message)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong")
@@ -134,9 +102,9 @@ const addTask = ({ settaskcard, isodateformate, fetchtasks }) => {
                 await fetchtasks()
                 settaskcard(false)
                 closemodel()
-                toast.success(res.data.message)
+                toast.success(res.data?.message)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (err) {
             toast.error(err.response?.data?.message || "Something went wrong heree");

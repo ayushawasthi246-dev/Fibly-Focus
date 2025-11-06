@@ -7,7 +7,6 @@ import { useMediaQuery } from "../../../components/breakpoints";
 import axios from "axios";
 import assets from "../../../assets/assets";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 export default function PomodoroCircle() {
 
@@ -24,8 +23,7 @@ export default function PomodoroCircle() {
   const [Tasks, setTasks] = useState([])
   const [sessionid, setsessionid] = useState("")
 
-  const { BackendURL, statuscheck , Streak } = useContext(Appcontent)
-  const navigate = useNavigate()
+  const { BackendURL, Streak } = useContext(Appcontent)
 
   const today = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}-${String(new Date().getDate()).padStart(2, "0")}`
 
@@ -35,47 +33,17 @@ export default function PomodoroCircle() {
       if (res.data?.success) {
         setTasks(res.data.TasksData)
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
     }
   }
 
-  const [isLogged, setIsLogged] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-
-
   useEffect(() => {
-    const checkStatus = async () => {
-      try {
-        const check = await statuscheck();
-
-        if (!check) {
-          toast.error("Not authorized. Please log in again");
-          setIsLogged(false);
-          navigate("/");
-          return;
-        }
-
-        setIsLogged(true);
-      } catch (error) {
-        toast.error(error.message);
-        setIsLogged(false);
-        navigate("/");
-      } finally {
-        setAuthChecked(true)
-      }
-    };
-
-    checkStatus();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (!authChecked || !isLogged) return
     fetchtasks()
     Streak()
-  }, [authChecked, isLogged])
+  }, [])
 
   const timers = ["5", "25", "45"]
   const [selectedtimer, setselectedtimer] = useState(1)
@@ -95,7 +63,7 @@ export default function PomodoroCircle() {
         setsessionid(res.data.ID)
       } else {
         setsessionid("")
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
@@ -118,8 +86,7 @@ export default function PomodoroCircle() {
       if (res.data?.success) {
         handletaskdone()
       } else {
-        toast.error(res.data.message)
-
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
@@ -127,7 +94,6 @@ export default function PomodoroCircle() {
   }
 
   useEffect(() => {
-    if (!authChecked || !isLogged) return
     if (runing) {
       if (timeleft <= 0) {
         updateSession()
@@ -138,7 +104,7 @@ export default function PomodoroCircle() {
       }, 1000);
       return () => clearInterval(interval)
     }
-  }, [timeleft, runing, authChecked, isLogged])
+  }, [timeleft, runing ])
 
 
   const progress = ((totaltime - timeleft) / totaltime) * circumference

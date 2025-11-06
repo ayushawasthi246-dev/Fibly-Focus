@@ -1,13 +1,14 @@
 import { useContext, useState } from "react";
 import Sidebar from "../components/sidebar.jsx";
 import WelcomeScreen from "../components/welcomeScreen.jsx"
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Appcontent } from "../context/Appcontext.jsx";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function Layout() {
   const [fit, setfit] = useState(true)
-  const { userdata } = useContext(Appcontent)
+  const { userdata ,statuscheck } = useContext(Appcontent)
   const [SeenWelcomeScreen, setSeenWelcomeScreen] = useState(false)
   const [showLoader, setShowLoader] = useState(true)
 
@@ -15,15 +16,47 @@ export default function Layout() {
     setSeenWelcomeScreen(userdata.HasSeenWelcome)
   }, [userdata])
 
-  console.log(userdata)
-  console.log(SeenWelcomeScreen)
-
   useEffect(() => {
     if (userdata && SeenWelcomeScreen !== undefined) {
       const timer = setTimeout(() => setShowLoader(false), 50);
       return () => clearTimeout(timer);
     }
   }, [userdata, SeenWelcomeScreen]);
+
+  console.log("userdata : ", userdata)
+  console.log("SeenWelcomeScreen :", SeenWelcomeScreen)
+
+  const navigate = useNavigate()
+
+  const [isLogged, setIsLogged] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      try {
+        const check = await statuscheck();
+
+        console.log("CHECK :", check)
+
+        if (!check) {
+          toast.error("Not authorized. Please log in again");
+          setIsLogged(false);
+          navigate("/");
+          return;
+        }
+
+        setIsLogged(true);
+      } catch (error) {
+        toast.error(error.message);
+        setIsLogged(false);
+        navigate("/");
+      } finally {
+        setAuthChecked(true)
+      }
+    };
+
+    checkStatus();
+  }, [navigate]);
 
   return (
     <div className="h-screen overflow-y-auto sm:h-screen w-screen flex gap-8 py-5 xs:py-7 px-5 bg-[#080414] relative">
@@ -52,8 +85,8 @@ export default function Layout() {
 
       {SeenWelcomeScreen && userdata && (
         <div className="h-full flex-1 min-w-0 flex flex-col md:ml-27 xxl:ml-0 gap-5 relative bg-[#080414] ">
-        <Outlet />
-      </div>
+          <Outlet />
+        </div>
       )}
 
     </div>

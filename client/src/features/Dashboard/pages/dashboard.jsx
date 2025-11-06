@@ -10,55 +10,17 @@ import { useNavigate } from "react-router-dom"
 import PieChartTasks from "../components/dashboardpiechart.jsx"
 
 const dashboard = () => {
-    const { BackendURL, userdata, Streak , statuscheck} = useContext(Appcontent)
+    const { BackendURL, userdata, Streak } = useContext(Appcontent)
     const navigate = useNavigate()
 
     const [belowXSM, setbelowXSM] = useState(window.innerWidth <= 550);
 
-    const [isLogged, setIsLogged] = useState(false);
-    const [authChecked, setAuthChecked] = useState(false);
-
-
     useEffect(() => {
-        const checkStatus = async () => {
-            try {
-                const check = await statuscheck();
-
-                if (!check) {
-                    toast.error("Not authorized. Please log in again");
-                    setIsLogged(false);
-                    navigate("/");
-                    return;
-                }
-
-                setIsLogged(true);
-            } catch (error) {
-                toast.error(error.message);
-                setIsLogged(false);
-                navigate("/");
-            } finally {
-                setAuthChecked(true)
-            }
-        };
-
-        checkStatus();
-    }, [navigate]);
-
-    useEffect(() => {
-        if (!authChecked || !isLogged) return
         const handleResize = () => setbelowXSM(window.innerWidth <= 550);
 
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
-    }, [authChecked, isLogged]);
-
-    useEffect(() => {
-        if (!authChecked || !isLogged) return
-        const handleResize = () => setbelowXSM(window.innerWidth <= 550);
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, [authChecked, isLogged]);
+    }, []);
 
     const [showtasks, setshowtasks] = useState(false)
 
@@ -78,7 +40,7 @@ const dashboard = () => {
             if (res.data?.success) {
                 setTasks(res.data.TasksData)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong")
@@ -91,7 +53,7 @@ const dashboard = () => {
             if (res.data?.success) {
                 setAllProjects(res.data.ProjectData)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong")
@@ -108,7 +70,7 @@ const dashboard = () => {
                 setcompletedTasks(res.data.completedtasks)
                 setTaskcompletionRate(res.data.completedtasksRate)
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong")
@@ -121,7 +83,7 @@ const dashboard = () => {
             if (res.data?.success) {
                 projects()
             } else {
-                toast.error(res.data.message)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong")
@@ -129,12 +91,11 @@ const dashboard = () => {
     }
 
     useEffect(() => {
-        if (!authChecked || !isLogged) return
         fetchtasks()
         projects()
         stats()
         Streak()
-    }, [authChecked, isLogged])
+    }, [])
 
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]

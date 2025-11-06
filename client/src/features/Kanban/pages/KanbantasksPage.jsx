@@ -15,7 +15,7 @@ function TaskKanban() {
 
   const { id } = useParams()
 
-  const { model, closemodel, statuscheck, Streak, BackendURL, notification, setnotification } = useContext(Appcontent)
+  const { model, closemodel, Streak, BackendURL, notification, setnotification } = useContext(Appcontent)
 
   const [card, setcard] = useState(false)
   const [Projectname, setProjectname] = useState('')
@@ -51,58 +51,33 @@ function TaskKanban() {
   const fetchTasks = async () => {
     try {
       const res = await axios.get(BackendURL + `/kanban/tasklist/${id}`, { withCredentials: true })
-      const Data = res.data.TaskData
-      setProjectname(res.data.Projectname)
-
-      const newColumns = {
-        todo: { name: "To Do", tasks: Data.filter(t => t.Status === 'todo') },
-        inprogress: { name: "In Progress", tasks: Data.filter(t => t.Status === 'inprogress') },
-        completed: { name: "Completed", tasks: Data.filter(t => t.Status === 'completed') },
+      
+      if(res.data?.success){
+        const Data = res.data.TaskData
+        setProjectname(res.data.Projectname)
+  
+        const newColumns = {
+          todo: { name: "To Do", tasks: Data.filter(t => t.Status === 'todo') },
+          inprogress: { name: "In Progress", tasks: Data.filter(t => t.Status === 'inprogress') },
+          completed: { name: "Completed", tasks: Data.filter(t => t.Status === 'completed') },
+        }
+  
+        setColumns(newColumns)
+      }else{
+        toast.error(res.data?.message)
+        navigate('/kanban')
       }
-
-      setColumns(newColumns)
-
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong")
     }
   }
-  const [isLogged, setIsLogged] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-
 
   useEffect(() => {
-    const checkStatus = async () => {
-      try {
-        const check = await statuscheck();
-
-        if (!check) {
-          toast.error("Not authorized. Please log in again");
-          setIsLogged(false);
-          navigate("/");
-          return;
-        }
-
-        setIsLogged(true);
-      } catch (error) {
-        toast.error(error.message);
-        setIsLogged(false);
-        navigate("/");
-      } finally {
-        setAuthChecked(true)
-      }
-    };
-
-    checkStatus();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (!authChecked || !isLogged) return
     fetchTasks()
     Streak()
-  }, [authChecked, isLogged])
+  }, [])
 
   useEffect(() => {
-    if (!authChecked || !isLogged) return
     if (model?.type === "edit") {
       setcard(true);
 
@@ -126,7 +101,7 @@ function TaskKanban() {
         Date: "",
       })
     }
-  }, [model, reset, setcard, authChecked, isLogged]);
+  }, [model, reset, setcard ]);
 
   const deleteTask = async () => {
     try {
@@ -138,7 +113,7 @@ function TaskKanban() {
         await fetchTasks()
         closemodel()
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong")
@@ -158,9 +133,9 @@ function TaskKanban() {
         setcard(false)
         await fetchTasks()
         reset()
-        toast.success(response.data.message)
+        toast.success(response.data?.message)
       } else {
-        toast.error(response.data.message)
+        toast.error(response.data?.message)
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong");
@@ -181,14 +156,13 @@ function TaskKanban() {
   }
 
   useEffect(() => {
-    if (!authChecked || !isLogged) return
     if (!notification) return;
     const timer = setTimeout(() => {
       setnotification({ idx: 0, show: false });
     }, 4000);
 
     return () => clearTimeout(timer)
-  }, [notification, authChecked, isLogged]);
+  }, [notification ]);
 
   return (
     <div className="flex-1 flex relative overflow-x-hidden">

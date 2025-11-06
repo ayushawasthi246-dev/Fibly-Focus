@@ -34,10 +34,10 @@ const Singup = () => {
       })
       if (data.success) {
         navigate('/Dashboard')
-        toast.success(data.message)
+        toast.success(data?.message)
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error?.message)
     }
   }
 
@@ -51,9 +51,9 @@ const Singup = () => {
       const { data } = await axios.post(BackendURL + '/auth/resend-otp', {}, {
         withCredentials: true,
       })
-      toast.success(data.message)
+      toast.success(data?.message)
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error?.message)
     }
   }
 
@@ -75,9 +75,9 @@ const Singup = () => {
         setisloggedin(true)
         getuserdata()
         navigate("/Dashboard")
-        toast.success(response.data.message)
+        toast.success(response.data?.message)
       } else {
-        toast.error(response.data.message)
+        toast.error(response.data?.message)
       }
     } catch (err) {
       console.error("Register failed:", err.response?.data || err.message);
