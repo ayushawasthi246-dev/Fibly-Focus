@@ -85,8 +85,6 @@ const Singup = () => {
 
   }
 
-
-
   const [passeye, setpasseye] = useState(true)
   const [confirmeye, setconfirmseteye] = useState(true)
 
@@ -106,7 +104,7 @@ const Singup = () => {
       if (response.data?.success) {
         setisloggedin(true)
         getuserdata()
-        navigate('/')
+        navigate('/Dashboard')
         toast.success(response.data?.message)
       } else {
         toast.error(response.data?.message)

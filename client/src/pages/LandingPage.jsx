@@ -432,13 +432,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-
-      {/* <div className="bg-[linear-gradient(to_bottom,_white_50%,_#080414_50%)] w-full flex justify-center px-10 pb-5 xsm:py-6">
-        <div className="p-1 xsm:p-3 border-2 xsm:border-4 border-dotted border-[#080414]">
-          <img className="object-contain" src="/Demo video.jpg" alt="" />
-        </div>
-      </div> */}
-
       <div className="w-full bg-[#080414] flex justify-center py-30">
         <div className="text-center flex flex-col gap-5 md:gap-7">
           <p className="">
@@ -474,10 +467,6 @@ export default function LandingPage() {
           Focus • Productivity • Task Flow • Deep Work • Clarity • Zero Distractions • Organized Workflow • Creative Focus • Time Blocking •
         </p>
       </div>
-
-
-
-
 
       <footer className="w-full bg-[#080414] py-12 xs:p-20 xl:py-24 xl:px-32 flex flex-col items-center ">
 

@@ -40,10 +40,10 @@ export const register = async (req, res) => {
                         httpOnly: true,
                         secure: process.env.Node_ENV === 'production',
                         sameSite: process.env.Node_ENV === 'production' ? 'none' : 'strict',
-                        maxAge: 24 * 60 * 60 * 1000
+                        maxAge: 60 * 60 * 1000
                     })
 
-                    return res.json({ success: true, message: "Same OTP is valid for 24 hours" })
+                    return res.json({ success: true, message: "Same OTP is valid for 1 hour" })
 
                 }
 
@@ -61,7 +61,7 @@ export const register = async (req, res) => {
                 httpOnly: true,
                 secure: process.env.Node_ENV === 'production',
                 sameSite: process.env.Node_ENV === 'production' ? 'none' : 'strict',
-                maxAge: 24 * 60 * 60 * 1000
+                maxAge: 60 * 60 * 1000
             })
 
             SendOTP(user, "verify")
@@ -87,7 +87,7 @@ export const login = async (req, res) => {
         const user = await VerifiedUserModel.findOne({ Email })
 
         if (!user) {
-            return res.json({ success: false, message: "Invalid Email" })
+            return res.json({ success: false, message: "User not exists" })
         }
 
         const isMatch = await bcrypt.compare(Password, user.Password)
@@ -129,8 +129,6 @@ export const logout = async (req, res) => {
     }
 
 }
-
-
 
 export const resendotp = async (req, res) => {
 
@@ -217,8 +215,22 @@ export const verification = async (req, res) => {
 }
 
 export const isauthenticated = async (req, res) => {
+
+    const UserID = req.user.id
+
+    if (!UserID) {
+        return res.json({ success: false, message: "Can't find user" })
+    }
+
     try {
+        const user = await VerifiedUserModel.findById(UserID)
+
+        if (!user) {
+            return res.json({ success: false, message: "User not exists" })
+        }
+
         return res.json({ success: true, message: "User is already logged in" })
+
     } catch (error) {
         return res.json({ success: false, message: error.message })
     }
@@ -231,9 +243,6 @@ export const issinguptoken = async (req, res) => {
         return res.json({ success: false, message: error.message })
     }
 }
-
-
-
 
 export const resetpasswordotp = async (req, res) => {
 
@@ -259,22 +268,22 @@ export const resetpasswordotp = async (req, res) => {
                 httpOnly: true,
                 secure: process.env.Node_ENV === 'production',
                 sameSite: process.env.Node_ENV === 'production' ? 'none' : 'strict',
-                maxAge: 24 * 60 * 60 * 1000
+                maxAge: 60 * 60 * 1000
             })
 
-            return res.json({ success: true, message: "Same OTP is valid for 24 hours" })
+            return res.json({ success: true, message: "Same OTP is valid for 1 hour" })
         }
 
         SendOTP(user, "reset")
-        
+
         const temptoken_reset = jwt.sign({ id: user._id }, process.env.JWT_SecrectKey, { expiresIn: '1d' })
 
-            res.cookie('temptoken_reset', temptoken_reset, {
-                httpOnly: true,
-                secure: process.env.Node_ENV === 'production',
-                sameSite: process.env.Node_ENV === 'production' ? 'none' : 'strict',
-                maxAge: 24 * 60 * 60 * 1000
-            })
+        res.cookie('temptoken_reset', temptoken_reset, {
+            httpOnly: true,
+            secure: process.env.Node_ENV === 'production',
+            sameSite: process.env.Node_ENV === 'production' ? 'none' : 'strict',
+            maxAge: 60 * 60 * 1000
+        })
 
         return res.json({ success: true, message: "Password Rsetting OTP has been sent to your email" })
 
@@ -390,4 +399,3 @@ export const setnewpassword = async (req, res) => {
         return res.json({ success: false, message: error.message })
     }
 }
-
