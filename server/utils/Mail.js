@@ -81,7 +81,6 @@ export const WelcomeMail = async (user) => {
             from: process.env.SMTP_User,
             to: user.Email,
             subject: "Welcome to FiblyFocus",
-            text: `Thanks for joing the FiblyFocus . Hey ${user.Username} your account has been created by : ${user.Email} `,
             html: `
                 <!DOCTYPE html>
                 <html>
