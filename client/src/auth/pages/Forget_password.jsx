@@ -86,7 +86,7 @@ const Singup = () => {
   }
 
 
-  
+
   const [passeye, setpasseye] = useState(true)
   const [confirmeye, setconfirmseteye] = useState(true)
 
@@ -102,7 +102,7 @@ const Singup = () => {
   const SetPassword = async (data) => {
 
     try {
-      const response = await axios.post(BackendURL + '/auth/reset-password', { NewPassword : data.Password } , { withCredentials: true })
+      const response = await axios.post(BackendURL + '/auth/reset-password', { NewPassword: data.Password }, { withCredentials: true })
       if (response.data?.success) {
         setisloggedin(true)
         getuserdata()
@@ -135,9 +135,9 @@ const Singup = () => {
       const res = await axios.post(BackendURL + '/auth/rest-resend-otp', {}, {
         withCredentials: true,
       })
-      if(res.data?.success){
+      if (res.data?.success) {
         toast.success(res.data?.message)
-      }else{
+      } else {
         toast.error(res.data?.message)
       }
     } catch (error) {
@@ -249,7 +249,13 @@ const Singup = () => {
 
           {isEmailSent && !isotpSent &&
 
-            <div className="flex flex-col justify-center h-full gap-5 xsm:w-sm sm:w-md lg:w-full xl:pl-20 pt-10 xxs:pt-0">
+            <div
+              onKeyDown={(e) => {
+                if (e.key == "Enter") {
+                  Submit(e)
+                }
+              }}
+              className="flex flex-col justify-center h-full gap-5 xsm:w-sm sm:w-md lg:w-full xl:pl-20 pt-10 xxs:pt-0">
 
               <div className="flex flex-col gap-3 text-center lg:text-start">
                 <p className="text-2xl xxs:text-3xl xsm:text-4xl font-bold font-Exo_2">Forgot your password?</p>
@@ -257,7 +263,8 @@ const Singup = () => {
               </div>
 
 
-              <div className="relative grid grid-cols-6 gap-2 xxs:gap-4 xxl:gap-6 h-9 xxs:h-11 xs:h-13 xsm:h-14 xxl:h-15 2xl:h-18" onPaste={handlepaste}>
+              <div
+                className="relative grid grid-cols-6 gap-2 xxs:gap-4 xxl:gap-6 h-9 xxs:h-11 xs:h-13 xsm:h-14 xxl:h-15 2xl:h-18" onPaste={handlepaste}>
                 {Array(6).fill(0).map((_, index) => (
                   <input type="text" inputMode='numeric' pattern="[0-9]*" maxLength='1' required key={index} className="bg-white rounded-lg xsm:rounded-2xl text-black text-center text-2xl"
                     ref={(el) => (inputref.current[index] = el)}

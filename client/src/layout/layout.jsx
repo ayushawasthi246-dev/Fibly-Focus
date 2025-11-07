@@ -23,35 +23,21 @@ export default function Layout() {
     }
   }, [userdata, SeenWelcomeScreen]);
 
-  console.log("userdata : ", userdata)
-  console.log("SeenWelcomeScreen :", SeenWelcomeScreen)
-
   const navigate = useNavigate()
-
-  const [isLogged, setIsLogged] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     const checkStatus = async () => {
       try {
-        const check = await statuscheck();
-
-        console.log("CHECK :", check)
+        const check = await statuscheck()
 
         if (!check) {
           toast.error("Not authorized. Please log in again");
-          setIsLogged(false);
           navigate("/");
           return;
         }
-
-        setIsLogged(true);
       } catch (error) {
-        toast.error(error.message);
-        setIsLogged(false);
+        toast.error(error?.message);
         navigate("/");
-      } finally {
-        setAuthChecked(true)
       }
     };
 

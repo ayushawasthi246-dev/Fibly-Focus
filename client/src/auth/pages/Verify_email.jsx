@@ -80,7 +80,6 @@ const Singup = () => {
         toast.error(response.data?.message)
       }
     } catch (err) {
-      console.error("Register failed:", err.response?.data || err.message);
       toast.error(err.response?.data?.message || "Something went wrong");
     }
   };
@@ -134,7 +133,13 @@ const Singup = () => {
             <span className="font-bold text-white">Focus</span>
           </div>
 
-          <div className="flex flex-col justify-center h-full gap-5 xsm:w-sm sm:w-md lg:w-full xl:pl-20 pt-10 xxs:pt-0">
+          <div
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                Submit(e)
+              }
+            }}
+            className="flex flex-col justify-center h-full gap-5 xsm:w-sm sm:w-md lg:w-full xl:pl-20 pt-10 xxs:pt-0">
 
             <div className="flex flex-col gap-3 text-center lg:text-start">
               <p className="text-2xl xxs:text-3xl xsm:text-4xl font-bold font-Exo_2">Verify Your Email</p>
