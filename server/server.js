@@ -18,7 +18,7 @@ app.use(express.json());
 const port = process.env.port || 4000;
 connectdb();
 
-const allowedorigin = ['http://localhost:5173']
+const allowedorigin = ['https://fiblyfocus.vercel.app']
 
 app.use(cookieParser());
 app.use(cors({ origin : allowedorigin , credentials: true }));
