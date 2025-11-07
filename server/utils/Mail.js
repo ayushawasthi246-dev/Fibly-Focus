@@ -1,4 +1,4 @@
-import transporter from '../config/nodEmailer.js'
+import transporter from '../config/nodemailer.js'
 
 export const SendOTP = async (user, purpose) => {
 
