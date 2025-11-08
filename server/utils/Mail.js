@@ -1,4 +1,4 @@
-import transporter from '../config/nodemailer.js'
+import createTransporter from "../config/nodemailer.js  "
 
 export const SendOTP = async (user, purpose) => {
 
@@ -12,22 +12,23 @@ export const SendOTP = async (user, purpose) => {
 
         if (purpose == "verify") {
             user.VerifyCode = otp
-            user.VerifyCodeExpireAt = Date.now() + 24 * 60 * 60 * 1000
+            user.VerifyCodeExpireAt = Date.now() + 60 * 60 * 1000
         } else {
             user.ResetPassCode = otp
-            user.ResetPassCodeExpireAt = Date.now() + 24 * 60 * 60 * 1000
+            user.ResetPassCodeExpireAt = Date.now() + 60 * 60 * 1000
         }
 
         await user.save()
 
+
         const VerifyOTPMail = {
-            from: process.env.SMTP_User,
+            from: `"FiblyFocus" <${process.env.SENDER_EMAIL}>`,
             to: user.Email,
             subject: purpose == "verify" ? "Account Verification OTP" : "Password Rest OTP",
             html: `
-                <!DOCTYPE html>
-                <html>
-                <head>
+            <!DOCTYPE html>
+            <html>
+            <head>
                     <meta charset="UTF-8">
                     <title>OTP Email</title>
                 </head>
@@ -43,25 +44,26 @@ export const SendOTP = async (user, purpose) => {
                             </tr>
                             <tr>
                             <td style="padding:20px 0; font-size:18px; color:#555; text-align:center;">
-                                Your OTP is 
-                                <div style="font-size:30px; font-weight:bold; color:#1a73e8; margin:15px 0; letter-spacing: 4px;"> ${otp}</div>
-                                Please use this OTP to ${purpose == "verify" ? "verify your FiblyFocus account and complete your registration." : "reset your FiblyFocus account password."}.
+                            Your OTP is 
+                            <div style="font-size:30px; font-weight:bold; color:#1a73e8; margin:15px 0; letter-spacing: 4px;"> ${otp}</div>
+                            Please use this OTP to ${purpose == "verify" ? "verify your FiblyFocus account and complete your registration." : "reset your FiblyFocus account password."}.
                             </td>
                             </tr>
                             <tr>
                             <td style="font-size:15px; color:#999; text-align:center;">
                                 If you did not request this OTP, please ignore this email or contact us if you have any concerns.
-                            </td>
-                            </tr>
-                        </table>
-                        </td>
-                    </tr>
-                    </table>
-                </body>
-                </html>
-                `
+                                </td>
+                                </tr>
+                                </table>
+                                </td>
+                                </tr>
+                                </table>
+                                </body>
+                                </html>
+                                `
         }
 
+        const transporter = await createTransporter()
         await transporter.sendMail(VerifyOTPMail);
 
         return ({ success: true, message: "OTP has been sent to your email" })
@@ -118,7 +120,7 @@ export const WelcomeMail = async (user) => {
                 </body>
                 </html>
             `
-,
+            ,
         }
 
         await transporter.sendMail(WelcomeMail);

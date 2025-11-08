@@ -32,7 +32,7 @@ export const register = async (req, res) => {
 
                 await existingUser.save()
 
-                if (existingUser.VerifyCodeExpireAt > Date.now()) {
+                if (Date.now() - user.ResetPassCodeExpireAt < 60 * 60 * 1000) {
 
                     const temptoken_signup = jwt.sign({ id: existingUser._id }, process.env.JWT_SecrectKey, { expiresIn: '1d' })
 
@@ -260,7 +260,7 @@ export const resetpasswordotp = async (req, res) => {
             return res.json({ success: false, message: "User not found" })
         }
 
-        if (user.ResetPassCodeExpireAt > Date.now()) {
+        if (Date.now() - user.ResetPassCodeExpireAt < 60 * 60 * 1000) {
 
             const temptoken_reset = jwt.sign({ id: user._id }, process.env.JWT_SecrectKey, { expiresIn: '1d' })
 
