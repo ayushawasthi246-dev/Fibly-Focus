@@ -24,17 +24,16 @@ export const register = async (req, res) => {
 
             if (existingUser.verifiedAccount) {
                 return res.json({ success: false, message: 'User already exists' })
-            } else {
-
+            } else {                
                 const HashPassword = await bcrypt.hash(Password, 10)
                 existingUser.Username = Username
                 existingUser.Password = HashPassword
 
                 await existingUser.save()
 
-                if (Date.now() - user.ResetPassCodeExpireAt < 60 * 60 * 1000) {
+                if (Date.now() - existingUser.ResetPassCodeExpireAt < 60 * 60 * 1000) {
 
-                    const temptoken_signup = jwt.sign({ id: existingUser._id }, process.env.JWT_SecrectKey, { expiresIn: '1d' })
+                    const temptoken_signup = jwt.sign({ id: existingUser._id }, process.env.JWT_SecrectKey, { expiresIn: '1h' })
 
                     res.cookie('temptoken_signup', temptoken_signup, {
                         httpOnly: true,
@@ -55,7 +54,7 @@ export const register = async (req, res) => {
             const user = new UnverifiedUserModel({ Username, Email, Password: HashPassword })
             await user.save()
 
-            const temptoken_signup = jwt.sign({ id: user._id }, process.env.JWT_SecrectKey, { expiresIn: '1d' })
+            const temptoken_signup = jwt.sign({ id: user._id }, process.env.JWT_SecrectKey, { expiresIn: '1h' })
 
             res.cookie('temptoken_signup', temptoken_signup, {
                 httpOnly: true,
@@ -262,7 +261,7 @@ export const resetpasswordotp = async (req, res) => {
 
         if (Date.now() - user.ResetPassCodeExpireAt < 60 * 60 * 1000) {
 
-            const temptoken_reset = jwt.sign({ id: user._id }, process.env.JWT_SecrectKey, { expiresIn: '1d' })
+            const temptoken_reset = jwt.sign({ id: user._id }, process.env.JWT_SecrectKey, { expiresIn: '1h' })
 
             res.cookie('temptoken_reset', temptoken_reset, {
                 httpOnly: true,
@@ -276,7 +275,7 @@ export const resetpasswordotp = async (req, res) => {
 
         SendOTP(user, "reset")
 
-        const temptoken_reset = jwt.sign({ id: user._id }, process.env.JWT_SecrectKey, { expiresIn: '1d' })
+        const temptoken_reset = jwt.sign({ id: user._id }, process.env.JWT_SecrectKey, { expiresIn: '1h' })
 
         res.cookie('temptoken_reset', temptoken_reset, {
             httpOnly: true,
