@@ -64,7 +64,12 @@ export const SendOTP = async (user, purpose) => {
         }
 
         const transporter = await createTransporter()
-        await transporter.sendMail(VerifyOTPMail);
+        try {
+            const result = await transporter.sendMail(VerifyOTPMail)
+            console.log("Mail sent successfully", result);
+        } catch (err) {
+            console.error("Email sending failed:", err);
+        }
 
         return ({ success: true, message: "OTP has been sent to your email" })
     } catch (error) {
